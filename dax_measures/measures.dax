@@ -1,0 +1,53 @@
+// ============================================
+// A2Z Furniture Sandgate Dashboard — DAX Measures
+// ============================================
+
+// ── Invoice_Summary table measures ──────────
+
+Total Revenue = SUM(Invoice_Summary[Total])
+
+Total Paid = SUM(Invoice_Summary[InvoiceAmountPaid])
+
+Total Outstanding = SUM(Invoice_Summary[InvoiceAmountDue])
+
+Num Invoices = COUNTROWS(Invoice_Summary)
+
+Avg Invoice Value = AVERAGE(Invoice_Summary[Total])
+
+Collection Rate % = 
+DIVIDE([Total Paid], [Total Revenue])
+
+
+// ── Invoice_Line_Items table measures ────────
+
+Product Revenue = SUM(Invoice_Line_Items[LineAmount])
+
+
+// ── Aged_Receivables table measures ──────────
+
+Overdue Customers = COUNTROWS(Aged_Receivables)
+
+Critical Overdue 90+ = 
+CALCULATE(
+    SUM(Aged_Receivables[Amount_Due]),
+    Aged_Receivables[OverdueBucket] = "90+ Days"
+)
+
+
+// ============================================
+// Notes
+// ============================================
+// - Total Revenue uses Invoice_Summary[Total], NOT a sum of 
+//   Invoice_Line_Items[LineAmount], because each invoice has 
+//   multiple line item rows (products, freight, discounts, 
+//   $0 notes). Summing line items would double-count freight 
+//   and miss the invoice-level total entirely.
+//
+// - Product Revenue (from Line_Items) is used specifically for 
+//   product/category-level analysis, filtered to LineAmount > 0 
+//   to exclude $0 informational rows (delivery instructions, 
+//   assembly warnings, payment confirmation notes).
+//
+// - Collection Rate % will show >100% temporarily if a customer 
+//   overpays or a credit note hasn't been applied yet — worth 
+//   flagging to the business if this measure shows odd values.

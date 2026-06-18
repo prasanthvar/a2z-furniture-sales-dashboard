@@ -1,0 +1,10 @@
+# Power BI
+*.pbix.lock
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Never commit raw Xero exports — anonymised data only
+SalesInvoices_*.csv
+*_raw.csv

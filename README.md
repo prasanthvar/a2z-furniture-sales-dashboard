@@ -81,4 +81,4 @@ Raw data was exported from Xero (Sales → Invoices → Export) covering June 20
 
 ---
 
-*Built by Prasanth Sangaraju Ra,machandraraju*
+*Built by Prasanth Sangaraju Ramachandraraju*
